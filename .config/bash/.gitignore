@@ -1,0 +1,8 @@
+
+.bash_history
+.bash_history.bak
+
+scripts/usb_update.sh
+scripts/backup.sh
+functions/view_shutdown.sh
+

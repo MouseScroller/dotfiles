@@ -1,0 +1,16 @@
+{
+	"languageserver": {
+		"bash": {
+			"command": "bash-language-server",
+			"args": ["start"],
+			"filetypes": ["sh"],
+			"ignoredRootPaths": ["~"]
+		}
+	},
+	"rust-analyzer.server.path": "rust-analyzer",
+
+	"suggest.numberSelect": false,
+	"suggest.labelMaxLength": 13,
+
+	"git.enableGutters": true
+}

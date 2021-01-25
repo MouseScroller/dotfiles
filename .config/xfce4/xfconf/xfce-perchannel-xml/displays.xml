@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<channel name="displays" version="1.0">
+  <property name="Default" type="empty">
+    <property name="HDMI-0" type="string" value="Samsung Electric Company 24&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="1fbcfc62aa61df948368fc3dd2b03ecff83be7c0"/>
+      <property name="Resolution" type="string" value="1920x1080"/>
+      <property name="RefreshRate" type="double" value="60.000000"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="2560"/>
+        <property name="Y" type="int" value="360"/>
+      </property>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1.000000"/>
+        <property name="Y" type="double" value="1.000000"/>
+      </property>
+    </property>
+    <property name="DP-0" type="string" value="Iiyama North America 28&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="d8410c49784d022e7abc4a3d175c4c3510447db9"/>
+      <property name="Resolution" type="string" value="2560x1440"/>
+      <property name="RefreshRate" type="double" value="59.950550"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="true"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1.000000"/>
+        <property name="Y" type="double" value="1.000000"/>
+      </property>
+    </property>
+    <property name="default" type="string" value="default">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value=""/>
+      <property name="Resolution" type="string" value="1024x768"/>
+      <property name="RefreshRate" type="double" value="0.000000"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+    </property>
+  </property>
+  <property name="ActiveProfile" type="string" value="a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"/>
+  <property name="a94a8fe5ccb19ba61c4c0873d391e987982fbbd3" type="string" value="test">
+    <property name="HDMI-0" type="string" value="Samsung 24&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="1fbcfc62aa61df948368fc3dd2b03ecff83be7c0"/>
+      <property name="Resolution" type="string" value="1920x1080"/>
+      <property name="RefreshRate" type="double" value="60.000000"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="2560"/>
+        <property name="Y" type="int" value="360"/>
+      </property>
+    </property>
+    <property name="DP-0" type="string" value="Iiyama North America 28&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="d8410c49784d022e7abc4a3d175c4c3510447db9"/>
+      <property name="Resolution" type="string" value="2560x1440"/>
+      <property name="RefreshRate" type="double" value="59.950550"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="true"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+    </property>
+  </property>
+  <property name="Notify" type="bool" value="true"/>
+  <property name="AutoEnableProfiles" type="bool" value="true"/>
+  <property name="Fallback" type="empty">
+    <property name="HDMI-0" type="string" value="Samsung Electric Company 24&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="1fbcfc62aa61df948368fc3dd2b03ecff83be7c0"/>
+      <property name="Resolution" type="string" value="1920x1080"/>
+      <property name="RefreshRate" type="double" value="60.000000"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="false"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="2560"/>
+        <property name="Y" type="int" value="360"/>
+      </property>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1.000000"/>
+        <property name="Y" type="double" value="1.000000"/>
+      </property>
+    </property>
+    <property name="DP-0" type="string" value="Iiyama North America 28&quot;">
+      <property name="Active" type="bool" value="true"/>
+      <property name="EDID" type="string" value="d8410c49784d022e7abc4a3d175c4c3510447db9"/>
+      <property name="Resolution" type="string" value="2560x1440"/>
+      <property name="RefreshRate" type="double" value="59.950550"/>
+      <property name="Rotation" type="int" value="0"/>
+      <property name="Reflection" type="string" value="0"/>
+      <property name="Primary" type="bool" value="true"/>
+      <property name="Position" type="empty">
+        <property name="X" type="int" value="0"/>
+        <property name="Y" type="int" value="0"/>
+      </property>
+      <property name="Scale" type="empty">
+        <property name="X" type="double" value="1.000000"/>
+        <property name="Y" type="double" value="1.000000"/>
+      </property>
+    </property>
+  </property>
+</channel>
