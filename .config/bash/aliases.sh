@@ -28,6 +28,8 @@ if ! type fd 1>/dev/null; then
 fi
 
 alias igrep="grep --ignore-case"
+alias pgrep='ps -ef | grep -v grep | grep'
+
 alias more=less
 alias cls=clear
 alias cd..="cd .."
@@ -35,10 +37,10 @@ alias cd...="cd ../.."
 alias ..="cd .."
 alias ...="cd ../.."
 alias ....="cd ../../.."
+
 alias calc="bc -l"
 alias ll="ls -lhA"
 alias e='nvim'
-alias pgrep='ps -ef | grep -v grep | grep'
 alias log='less +F'
 alias cp='cp -i'
 export LANG="en_US.UTF-8"
@@ -57,7 +59,7 @@ HISTFILESIZE=-1
 #less
 export LESSHISTFILE=/dev/null
 
-HISTIGNORE="vlc *:media_compress *:rm *:view_shutdown *:du -sh:vcut *:mp4_download *:mp3_download *:touch:mkdir:?:??:???"
+HISTIGNORE="celluloid *:vlc *:media_compress *:rm *:view_shutdown *:du -sh:vcut *:mp4_download *:mp3_download *:touch:mkdir:?:??:???"
 
 export DOWNLOADS=/mnt/storage/downloads/
 

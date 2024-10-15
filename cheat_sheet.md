@@ -52,7 +52,6 @@ sudo systemctl start --now cups.service && sudo systemctl start --now cups.socke
         -sefsef
  - sefesf
 
-## TODO
+## restart desktop manager
 
-
-xrandr --output DISPLAY --auto
+sudo systemctl restart lightdm

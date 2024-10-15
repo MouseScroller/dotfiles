@@ -1,15 +1,13 @@
-function sound_length () {
+function sound_length() {
 
-	folder="0"
-	for var in "$@"
-	do
+	local folder="0"
+	for var in "$@"; do
 		if [ "--folder" == "$var" ]; then
 			folder="1"
 		fi
 	done
 
-	for file in *;
-	do
+	for file in *; do
 		if [ -f "$file" ] || { [ "$folder" == "1" ] && [ -d "$file" ]; }; then
 
 			time=$(media_length "$file")
@@ -22,18 +20,17 @@ function sound_length () {
 	done
 }
 
-function media_length () {
+function media_length() {
 
 	if [ -f "$1" ]; then
 		time=$(ffprobe -i "$1" -show_format -v quiet | sed -n "s/duration=//p")
 	elif [ -d "$1" ]; then
 		time=0
-		for f in "$1"/*;
-		do
+		for f in "$1"/*; do
 			if [ -f "$f" ]; then
 				t=$(ffprobe -i "$f" -show_format -v quiet | sed -n "s/duration=//p")
 				if [[ "$t" != "" ]] && [[ "$t" != "N/A" ]]; then
-					time=$(bc <<< "$time+$t")
+					time=$(bc <<<"$time+$t")
 				fi
 			fi
 		done
@@ -46,7 +43,7 @@ function media_length () {
 	fi
 }
 
-function vcut(){
+function vcut() {
 
 	if [[ -z "$2" ]]; then
 		echo "requires at least two args (file) (start) (end)"
@@ -72,7 +69,7 @@ function vcut(){
 
 	du -sh "$file"
 
-	ffmpeg -ss "$start" $end -i "$file" -c copy "$file_copy" 2>/dev/null
+	ffmpeg -ss "$start" -i "$file" $end -c:v copy -c:a copy "$file_copy" 2>/dev/null
 
 	if [[ "$?" == "0" ]]; then
 		mv "$file_copy" "$file"
@@ -83,15 +80,22 @@ function vcut(){
 	du -sh "$file"
 }
 
-function media_compress(){
+function media_compress() {
 
 	if [[ -z "$1" ]]; then
 		echo "requires at least one arg (file)"
 		return 1
 	fi
 
-	for var in "$@"
-	do
+	local force="0"
+
+	for var in "$@"; do
+
+		if [[ "$var" == "--force" ]]; then
+			force="1"
+			continue
+		fi
+
 		local file="$var"
 
 		if [ ! -f "$file" ]; then
@@ -103,10 +107,19 @@ function media_compress(){
 		local extension="${filename##*.}"
 		local file_copy="/tmp/$file.tmp.$extension"
 
-
 		du -sh "$file"
 
 		size=$(du -b "$file" | cut -f 1)
+
+		if [[ "$force" == "0" ]]; then
+
+			local codec=$(ffprobe -v error -select_streams v:0 -show_entries stream=codec_name -of default=noprint_wrappers=1:nokey=1 "$file")
+
+			if [[ "$codec" == "hevc" ]]; then
+				echo "Already encoded"
+				continue
+			fi
+		fi
 
 		ffmpeg -i "$file" -vcodec libx265 -crf 24 "$file_copy" 2>/dev/null
 
@@ -126,10 +139,11 @@ function media_compress(){
 		fi
 	done
 }
-function trap_view_shutdown_sigint(){
+
+function trap_view_shutdown_sigint() {
 	trap - SIGINT
 	export trap_view_shutdown_triggerd="1"
-	if [[ `basename $PWD` != "keep" ]]; then
+	if [[ $(basename $PWD) != "keep" ]]; then
 		echo "move file"
 		mv "$1" keep/
 		store_id "$1" "K"
@@ -138,19 +152,18 @@ function trap_view_shutdown_sigint(){
 	echo "keep file"
 
 	pgrep firefox | awk '{print $2}' | xargs kill 2>/dev/null
-	pgrep vlc | awk '{print $2}' | xargs kill 2>/dev/null
+	pgrep celluloid | awk '{print $2}' | xargs kill 2>/dev/null
 
 	shutdown -h now
 }
 
-
-function view_shutdown (){
+function view_shutdown() {
 	if [ -f "$1" ]; then
-		pid=0;
+		pid=0
 
 		trap 'trap_view_shutdown_sigint "$1"' SIGINT
 
-		vlc $1 &
+		celluloid $1 &
 		pid="$!"
 		sleep 2
 		cls
@@ -159,14 +172,14 @@ function view_shutdown (){
 		wait
 		trap - SIGINT
 		ret="$?"
-		if [[ "$ret" == "0" && "$trap_view_shutdown_triggerd" != "1" && `basename $PWD` != "keep" ]]; then
+		if [[ "$ret" == "0" && "$trap_view_shutdown_triggerd" != "1" && $(basename $PWD) != "keep" ]]; then
 			echo "remove file"
 			rm "$1"
 			store_id "$1" "W"
 		fi
 
 		pgrep firefox | awk '{print $2}' | xargs kill 2>/dev/null
-		pgrep vlc | awk '{print $2}' | xargs kill 2>/dev/null
+		pgrep celluloid | awk '{print $2}' | xargs kill 2>/dev/null
 
 		shutdown -h now
 	else
@@ -175,44 +188,19 @@ function view_shutdown (){
 }
 
 STORE_FILE=~/dev/db/test_db/test
-YTDL_OPTIONS=" --no-call-home --limit-rate 4M --restrict-filenames"
+YTDL_OPTIONS=" --no-call-home --limit-rate 6M --restrict-filenames"
 
-function todo_view_now(){
-
-	for var in "$@"
-	do
-
-		response=`yt-dlp $YTDL_OPTIONS --get-id --get-filename "$var"`
-
-		readarray -t info <<<"$response"
-		id="[${info[0]}]"
-		name="${info[1]}"
-
-		if [[ -z "$id" || -z "$name" ]]; then
-			echo "ERROR geting info for [$var]";
-			return
-		fi
-
-		if (( ${#name} > 150 )); then
-			name="$(echo "$name" | cut -c 1-100)-$id.%(ext)s"
-		fi
-
-		yt-dlp "$var" $YTDL_OPTIONS -o - | vlc -
-
-	done
-}
-
-function mp4_download(){
-
+function mp4_download() {
 	media_download "video" "$@"
 }
-function mp3_download(){
-
+function mp3_download() {
 	media_download "audio" "$@"
 }
+function mp4_stream() {
+	media_download "video" "--stream" "$@"
+}
 
-function media_download(){
-
+function media_download() {
 
 	local SUB_TITLES=' -f bestvideo[height<=2000]+bestaudio/best[height<=2000] --sub-langs en,de --write-subs'
 	local type="$1"
@@ -220,36 +208,40 @@ function media_download(){
 	shift 1
 
 	local force="0"
-	for var in "$@"
-	do
+	local stream="0"
+	for var in "$@"; do
 		if [[ "$var" == "--force" ]]; then
 			force="1"
 			continue
 		fi
+		if [[ "$var" == "--stream" ]]; then
+			stream="1"
+			continue
+		fi
 
-		response=`yt-dlp $YTDL_OPTIONS --get-id --get-filename "$var"`
+		response=$(yt-dlp $YTDL_OPTIONS --get-id --get-filename "$var")
 
 		readarray -t info <<<"$response"
 		local id="[${info[0]}]"
 		local name="${info[1]}"
 
 		if [[ -z "$id" || -z "$name" ]]; then
-			echo "ERROR geting info for [$var]";
+			echo "ERROR geting info for [$var]"
 			return
 		fi
 
-		if (( ${#name} > 150 )); then
+		if ((${#name} > 150)); then
 			name="$(echo "$name" | cut -c 1-100)-$id.%(ext)s"
 		fi
 
 		local state=$(check_store_id "$id")
 		if [[ "$state" != "0" ]]; then
-			echo -n "$id known state $state | $name";
+			echo -n "$id known state $state | $name"
 			if [[ "$force" == "0" ]]; then
-				echo " skipping";
+				echo " skipping"
 				continue
 			else
-				echo " redownloading";
+				echo " redownloading"
 				if [ -f "$name" ]; then
 					rm -f "$name"
 				fi
@@ -267,14 +259,21 @@ function media_download(){
 
 		yt-dlp "$var" $YTDL_OPTIONS $SETTINGS -o "$name"
 
+		if [[ "$stream" == "0" ]]; then
+			yt-dlp "$var" $YTDL_OPTIONS $SETTINGS -o "$name"
+		else
+			echo "$name"
+			yt-dlp "$var" $YTDL_OPTIONS $SETTINGS -o - | mpv -
+		fi
+
 		if [[ "$?" == "0" ]]; then
+			echo ""
 			store_id "$id" "D"
 		fi
 
 		langfiles=$(compgen -G "./*$id*.vtt") # language file exists
-		if [[ "$?" == "0"  ]]; then
-			for langfile in $langfiles
-			do
+		if [[ "$?" == "0" ]]; then
+			for langfile in $langfiles; do
 				ffmpeg -i "$name" -i "$langfile" -c:s webvtt -c:v copy -c:a copy "tmp_$name" -v quiet
 				mv "tmp_$name" "$name"
 				rm "$langfile"
@@ -283,8 +282,7 @@ function media_download(){
 	done
 }
 
-
-function check_store_id(){
+function check_store_id() {
 	id=$(echo "$1" | grep -oP -- "(?<=\[)(.*)(?=\])")
 
 	state="$2"
@@ -298,7 +296,7 @@ function check_store_id(){
 	fi
 }
 
-function store_id(){
+function store_id() {
 	id=$(echo "$1" | grep -oP -- "(?<=\[)(.*)(?=\])")
 
 	state="$2"
@@ -308,6 +306,6 @@ function store_id(){
 	if [[ "$?" == "0" ]]; then
 		sed -i "s/.\t\[$id\]/$state\t\[$id\]/" $STORE_FILE
 	else
-		echo -e "$state\t[$id]" >> $STORE_FILE
+		echo -e "$state\t[$id]" >>$STORE_FILE
 	fi
 }

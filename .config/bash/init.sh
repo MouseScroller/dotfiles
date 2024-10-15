@@ -37,3 +37,4 @@ function __promt(){
 source "/usr/share/fzf/completion.bash" 2> /dev/null
 source "/usr/share/fzf/key-bindings.bash"
 
+mkdir -p "/tmp/test"

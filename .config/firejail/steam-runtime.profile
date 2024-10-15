@@ -1,4 +1,12 @@
 
+noblacklist /sys/module
+whitelist /sys/module/nvidia*
+read-only /sys/module/nvidia*
+
+ignore private-dev
+ignore noroot
+
+
 include allow-commen.inc
 
 nowhitelist ${HOME}/.killingfloor
@@ -18,7 +26,6 @@ ignore mkdir ${HOME}/.klei
 ignore mkdir ${HOME}/.paradoxinteractive
 ignore mkdir ${HOME}/.prey
 ignore mkdir ${HOME}/.mbwarband
-
 
 ignore noblacklist ${HOME}/.killingfloor
 ignore noblacklist ${HOME}/.klei
@@ -43,5 +50,14 @@ blacklist ${HOME}/.mbwarband
 noblacklist /mnt/save/SteamLibrary/
 read-write /mnt/save/SteamLibrary/
 
+noblacklist ${HOME}/.local/share/Steam
+read-write ${HOME}/.local/share/Steam
+
+noblacklist /sys/module
+whitelist /sys/module/nvidia*
+read-only /sys/module/nvidia*
+
+ignore private-dev
+ignore noroot
 
 
